@@ -24,7 +24,7 @@ public class MuevePersonaje : MonoBehaviour
         MoverPersonaje();
     }
 
-    public bool Mover(Vector2 direccion)
+    public void Mover(Vector2 direccion)
     {
         if (Mathf.Abs(direccion.x) < 0.5f)
         {
@@ -35,21 +35,15 @@ public class MuevePersonaje : MonoBehaviour
             direccion.y = 0;
         }
         direccion.Normalize();
-        if(Bloqueado(transform.position, direccion))
-        {
-            return false;
-        }
-        else
-        {
-            if (ValorCasilla(transform.position, direccion) == 4)
+        if(!Bloqueado(transform.position, direccion))
+        {           
+            if (ValorCasilla(transform.position, direccion) == 1)
             {
                 Debug.Log("Caja para mover!.");
                 MoverCaja(transform.position, direccion);
             }
             Vector2 movimiento = direccion * sokobanScript.alturaImagen;
             transform.Translate(movimiento);
-
-            return true;
         }
     }
 
@@ -61,7 +55,7 @@ public class MuevePersonaje : MonoBehaviour
         int siguienteX = x + Mathf.RoundToInt(direccion.x);
         int siguienteY = y + Mathf.RoundToInt(direccion.y);
 
-        int valor = sokobanScript.datosMapa[siguienteX, siguienteY];
+        int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
         return valor;
     }
 
@@ -82,11 +76,11 @@ public class MuevePersonaje : MonoBehaviour
             return false;
         }
 
-        int valor = sokobanScript.datosMapa[siguienteX, siguienteY];
+        int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
         Debug.Log("En la posicion " + siguienteX + "," + siguienteY + " = " + valor);
 
-        // Si la celda siguiente contiene una caja (valor 4)
-        if (valor == 4)
+        // Si la celda siguiente contiene un objeto movible (valor 1)
+        if (valor == 1)
         {
             int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
             int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
@@ -96,14 +90,14 @@ public class MuevePersonaje : MonoBehaviour
                 return false;
             }
 
-            int siguiente2Valor = sokobanScript.datosMapa[siguiente2X, siguiente2Y];
+            int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
             Debug.Log("Valor2 = " + siguiente2Valor);
 
-            return siguiente2Valor == 2 || siguiente2Valor == 1;
+            return siguiente2Valor == 2;
         }
 
-        // Si la celda siguiente no es una caja, verificar si es una pared (valor 1) o bloqueo (valor 2)
-        return valor == 2 || valor == 1;
+        // Si la celda siguiente no es una caja, verificar si es un bloqueo (valor 2)
+        return valor == 2;
     }
 
     void MoverCaja(Vector3 position, Vector2 direccion)
@@ -129,8 +123,8 @@ public class MuevePersonaje : MonoBehaviour
             int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
             int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
 
-            sokobanScript.datosMapa[siguienteX, siguienteY] = 0; // La caja deja su posición actual
-            sokobanScript.datosMapa[siguiente2X, siguiente2Y] = 4; // La caja ocupa la nueva posición
+            sokobanScript.datosMapaColision[siguienteX, siguienteY] = 0; // La caja deja su posición actual
+            sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = 1; // La caja ocupa la nueva posición
 
             float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
             float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
@@ -176,7 +170,7 @@ public class MuevePersonaje : MonoBehaviour
             return false; 
         }
 
-        int valor = sokobanScript.datosMapa[x, y];
+        int valor = sokobanScript.datosMapaVisual[x, y];
 
         // 1 = pared  2 = arbol
         return valor != 2 && valor != 1; 
