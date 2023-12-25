@@ -10,7 +10,8 @@ public class Sokoban : MonoBehaviour
 
     public int alturaImagen = 60;
     public const int tamanyo = 10;
-    public int[,] datosMapa;
+    public int[,] datosMapaVisual;
+    public int[,] datosMapaColision;
 
     public List<GameObject> cajas;
 
@@ -23,7 +24,7 @@ public class Sokoban : MonoBehaviour
 
     void AsignarValoresIniciales()
     {
-        datosMapa = new int[tamanyo, tamanyo]
+        datosMapaVisual = new int[tamanyo, tamanyo]
         {
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
             {2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
@@ -36,6 +37,20 @@ public class Sokoban : MonoBehaviour
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
         };
+
+        datosMapaColision = new int[tamanyo, tamanyo]
+{
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},
+            {2, 2, 0, 1, 0, 0, 0, 0, 2, 2},
+            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+};
     }
 
     void MostrarMapa()
@@ -44,7 +59,7 @@ public class Sokoban : MonoBehaviour
         {
             for (int y = 0; y < tamanyo; y++)
             {
-                int valor = datosMapa[x, y];
+                int valor = datosMapaVisual[x, y];
                 if (valor >= 0 && valor < prefabs.Length)
                 {                    
                     if (valor > 3)
@@ -63,7 +78,7 @@ public class Sokoban : MonoBehaviour
         {
             for (int y = 0; y < tamanyo; y++)
             {
-                int valor = datosMapa[x, y];
+                int valor = datosMapaVisual[x, y];
                 if (valor >= 0 && valor < prefabs.Length)
                 {                    
                     if (valor > 3)
