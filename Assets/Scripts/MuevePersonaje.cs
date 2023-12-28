@@ -7,7 +7,6 @@ public class MuevePersonaje : MonoBehaviour
     public float velocidad = 1.0f;
     public Sokoban sokobanScript;
     bool puedeMover;
-
     const int sinColision = 0;
     const int colisionMovil = 1;
     const int conColision = 2;
@@ -39,18 +38,27 @@ public class MuevePersonaje : MonoBehaviour
         }
         direccion.Normalize();
         if(!Bloqueado(transform.position, direccion))
-        {           
-            if (ValorCasilla(transform.position, direccion) == 1)
-            {
-                Debug.Log("Caja para mover!.");
-                MoverCaja(transform.position, direccion);
-            }
-            Vector2 movimiento = direccion * sokobanScript.alturaImagen;
-            transform.Translate(movimiento);
+        {
+            DesplazaPersonaje(direccion);
         }
     }
 
-    int ValorCasilla(Vector3 position, Vector2 direccion)
+    private void DesplazaPersonaje(Vector2 direccion)
+    {
+        if (ColisionaConCaja(direccion))
+        {
+            MoverCaja(transform.position, direccion);
+        }
+        Vector2 movimiento = direccion * sokobanScript.alturaImagen;
+        transform.Translate(movimiento);
+    }
+
+    private bool ColisionaConCaja(Vector2 direccion)
+    {
+        return ValorCasillaColision(transform.position, direccion) == colisionMovil;
+    }
+
+    int ValorCasillaColision(Vector3 position, Vector2 direccion)
     {
         int x = Mathf.FloorToInt(position.x / sokobanScript.alturaImagen);
         int y = Mathf.FloorToInt(position.y / sokobanScript.alturaImagen);
@@ -70,32 +78,26 @@ public class MuevePersonaje : MonoBehaviour
         int siguienteX = x + Mathf.RoundToInt(direccion.x);
         int siguienteY = y + Mathf.RoundToInt(direccion.y);
 
-        Debug.Log("Siguiente Coordenadas: " + siguienteX + ", " + siguienteY);
-
-        if (siguienteX < 0 || siguienteX >= Sokoban.tamanyo || siguienteY < 0 || siguienteY >= Sokoban.tamanyo)
-        {
-            return false;
-        }
-
+        if (FueraDeRango(siguienteX, siguienteY)) return false;
+        
         int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
-        Debug.Log("En la posicion " + siguienteX + "," + siguienteY + " = " + valor);
 
         if (valor == colisionMovil)
         {
             int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
             int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
-
-            if (siguiente2X < 0 || siguiente2X >= Sokoban.tamanyo || siguiente2Y < 0 || siguiente2Y >= Sokoban.tamanyo)
-            {
-                return false;
-            }
-
+            
+            if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
+            
             int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
-            Debug.Log("Valor2 = " + siguiente2Valor);
-
             return siguiente2Valor == conColision;
         }
         return valor == conColision;
+    }
+
+    private static bool FueraDeRango(int siguienteX, int siguienteY)
+    {
+        return siguienteX < 0 || siguienteX >= Sokoban.tamanyo || siguienteY < 0 || siguienteY >= Sokoban.tamanyo;
     }
 
     void MoverCaja(Vector3 position, Vector2 direccion)
@@ -113,8 +115,6 @@ public class MuevePersonaje : MonoBehaviour
         
         if (caja != null )
         {
-            // Debug.Log("caja encontrada!");
-
             int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
             int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
 
@@ -130,7 +130,6 @@ public class MuevePersonaje : MonoBehaviour
         {
             Debug.Log("No encontrada!!");
         }
-
     }
 
     void MoverPersonaje()
@@ -152,19 +151,6 @@ public class MuevePersonaje : MonoBehaviour
         {
             puedeMover = true;
         }
-    }
-
-    bool EsPosicionValida(int x, int y)
-    {
-        if (x < 0 || x >= Sokoban.tamanyo || y < 0 || y >= Sokoban.tamanyo)
-        {
-            return false; 
-        }
-
-        int valor = sokobanScript.datosMapaVisual[x, y];
-
-        // 1 = pared  2 = arbol
-        return valor != 2 && valor != 1; 
     }
 }
 
