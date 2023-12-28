@@ -60,23 +60,16 @@ public class MuevePersonaje : MonoBehaviour
 
     int ValorCasillaColision(Vector3 position, Vector2 direccion)
     {
-        int x = Mathf.FloorToInt(position.x / sokobanScript.alturaImagen);
-        int y = Mathf.FloorToInt(position.y / sokobanScript.alturaImagen);
-
-        int siguienteX = x + Mathf.RoundToInt(direccion.x);
-        int siguienteY = y + Mathf.RoundToInt(direccion.y);
-
+        int siguienteX = SiguientePosicion(position.x, direccion.x);
+        int siguienteY = SiguientePosicion(position.y, direccion.y);
         int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
         return valor;
     }
 
     bool Bloqueado(Vector3 position, Vector2 direccion)
     {
-        int x = Mathf.FloorToInt(position.x / sokobanScript.alturaImagen);
-        int y = Mathf.FloorToInt(position.y / sokobanScript.alturaImagen);
-
-        int siguienteX = x + Mathf.RoundToInt(direccion.x);
-        int siguienteY = y + Mathf.RoundToInt(direccion.y);
+        int siguienteX = SiguientePosicion(position.x, direccion.x);
+        int siguienteY = SiguientePosicion(position.y, direccion.y);
 
         if (FueraDeRango(siguienteX, siguienteY)) return false;
         
@@ -102,24 +95,23 @@ public class MuevePersonaje : MonoBehaviour
 
     void MoverCaja(Vector3 position, Vector2 direccion)
     {
-        int siguienteX = Mathf.FloorToInt(position.x / sokobanScript.alturaImagen) + Mathf.RoundToInt(direccion.x);
-        int siguienteY = Mathf.FloorToInt(position.y / sokobanScript.alturaImagen) + Mathf.RoundToInt(direccion.y);
+        int siguienteX = SiguientePosicion(position.x, direccion.x);
+        int siguienteY = SiguientePosicion(position.y, direccion.y);
 
         Debug.Log("Caja en:" + siguienteX + "," + siguienteY);
 
         float realX = (siguienteX + 0.5f) * sokobanScript.alturaImagen;
         float realY = (siguienteY + 0.5f) * sokobanScript.alturaImagen;
         float diferencia = sokobanScript.alturaImagen * 0.25f;
-
         GameObject caja = sokobanScript.cajas.Find(c => Vector2.Distance(new Vector2(c.transform.position.x, c.transform.position.y), new Vector2(realX, realY)) < diferencia);
-        
-        if (caja != null )
+
+        if (caja != null)
         {
             int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
             int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
 
-            sokobanScript.datosMapaColision[siguienteX, siguienteY] = sinColision; 
-            sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = colisionMovil; 
+            sokobanScript.datosMapaColision[siguienteX, siguienteY] = sinColision;
+            sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = colisionMovil;
 
             float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
             float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
@@ -130,6 +122,11 @@ public class MuevePersonaje : MonoBehaviour
         {
             Debug.Log("No encontrada!!");
         }
+    }
+
+    private int SiguientePosicion(float position, float direccion)
+    {
+        return Mathf.FloorToInt(position / sokobanScript.alturaImagen) + Mathf.RoundToInt(direccion);
     }
 
     void MoverPersonaje()
