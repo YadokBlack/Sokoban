@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-// using static Level;
 
 public class Level : MonoBehaviour
 {
@@ -14,7 +11,6 @@ public class Level : MonoBehaviour
     }
 
     public Sokoban sokoban;
-
     DatosNivel nivel;
  
     public void CargarNivel(int nivel)
@@ -26,56 +22,67 @@ public class Level : MonoBehaviour
     public void CargarDatosNivel(string rutaArchivo)
     {
         nivel = null;
-
         if (File.Exists(rutaArchivo))
         {
-            Debug.Log("Archivo leido");
-            string contenidoArchivo = File.ReadAllText(rutaArchivo);
-            nivel = JsonUtility.FromJson<DatosNivel>(contenidoArchivo);
-
-            if (nivel == null)
-            {
-                Debug.LogError("Error al deserializar el archivo JSON.");
-            }
-            else
-            {
-                // Accede a las variables del objeto
-                string nombre = nivel.nombre;
-                string[] lineas = nivel.lineas;
-
-                // Imprime las variables
-                Debug.Log("Nombre: " + nombre);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    string linea = nivel.lineas[i];
-                    for (int j = 0; j < 10; j++)
-                    {
-                        char caracter = linea[j];
-                        int valor = caracter - 'a';
-                        sokoban.datosMapaVisual[i, j] = valor;
-                    }
-                }
-
-                for (int i = 10; i < 20; i++)
-                {
-                    string linea = nivel.lineas[i];
-                    for (int j = 0; j < 10; j++)
-                    {
-                        char caracter = linea[j];
-                        int valor = caracter - 'a';
-                        sokoban.datosMapaColision[i - 10, j] = valor;
-                    }
-                }
-
-                Debug.Log("Nombre del nivel cargado: " + nivel.nombre);
-                ImprimirMapa(sokoban.datosMapaVisual, "Visual");
-                ImprimirMapa(sokoban.datosMapaColision, "Colision");
-            }
+            LeerArchivo(rutaArchivo);
         }
         else
         {
             Debug.LogError("Archivo no encontrado en la ruta: " + rutaArchivo);
+        }
+    }
+
+    private void LeerArchivo(string rutaArchivo)
+    {
+        string contenidoArchivo = File.ReadAllText(rutaArchivo);
+        nivel = JsonUtility.FromJson<DatosNivel>(contenidoArchivo);
+        if (nivel == null)
+        {
+            Debug.LogError("Error al deserializar el archivo JSON.");
+        }
+        else
+        {
+            CargaArchivoNivel();
+        }
+    }
+
+    private void CargaArchivoNivel()
+    {
+        string nombre = nivel.nombre;
+        string[] lineas = nivel.lineas;
+        Debug.Log("Nombre: " + nombre);
+        ActualizaMapaVisual();
+        ActualizaMapaColision();
+        //  Debug.Log("Nombre del nivel cargado: " + nivel.nombre);
+        //  ImprimirMapa(sokoban.datosMapaVisual, "Visual");
+        //  ImprimirMapa(sokoban.datosMapaColision, "Colision");
+    }
+
+    private void ActualizaMapaVisual()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            string linea = nivel.lineas[i];
+            for (int j = 0; j < 10; j++)
+            {
+                char caracter = linea[j];
+                int valor = caracter - 'a';
+                sokoban.datosMapaVisual[i, j] = valor;
+            }
+        }
+    }
+
+    private void ActualizaMapaColision()
+    {
+        for (int i = 10; i < 20; i++)
+        {
+            string linea = nivel.lineas[i];
+            for (int j = 0; j < 10; j++)
+            {
+                char caracter = linea[j];
+                int valor = caracter - 'a';
+                sokoban.datosMapaColision[i - 10, j] = valor;
+            }
         }
     }
 
@@ -88,7 +95,6 @@ public class Level : MonoBehaviour
     {
         string nombreArchivo = $"level{numeroDeNivel:D2}.json"; 
         string rutaCompleta = Path.Combine(ObtenerRutaDelEjecutable(), "levels", nombreArchivo);
-
         return rutaCompleta;
     }
 
