@@ -97,9 +97,7 @@ public class MuevePersonaje : MonoBehaviour
     {
         int siguienteX = SiguientePosicion(position.x, direccion.x);
         int siguienteY = SiguientePosicion(position.y, direccion.y);
-
         Debug.Log("Caja en:" + siguienteX + "," + siguienteY);
-
         float realX = (siguienteX + 0.5f) * sokobanScript.alturaImagen;
         float realY = (siguienteY + 0.5f) * sokobanScript.alturaImagen;
         float diferencia = sokobanScript.alturaImagen * 0.25f;
@@ -107,21 +105,23 @@ public class MuevePersonaje : MonoBehaviour
 
         if (caja != null)
         {
-            int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
-            int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
-
-            sokobanScript.datosMapaColision[siguienteX, siguienteY] = sinColision;
-            sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = colisionMovil;
-
-            float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
-            float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
-
-            caja.transform.position = new Vector3(real2X, real2Y, caja.transform.position.z);
+            DesplazarCaja(direccion, siguienteX, siguienteY, caja);
         }
         else
         {
             Debug.Log("No encontrada!!");
         }
+    }
+
+    private void DesplazarCaja(Vector2 direccion, int siguienteX, int siguienteY, GameObject caja)
+    {
+        int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
+        int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
+        sokobanScript.datosMapaColision[siguienteX, siguienteY] = sinColision;
+        sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = colisionMovil;
+        float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
+        float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
+        caja.transform.position = new Vector3(real2X, real2Y, caja.transform.position.z);
     }
 
     private int SiguientePosicion(float position, float direccion)
