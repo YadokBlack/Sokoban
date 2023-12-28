@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 
 public class Sokoban : MonoBehaviour
@@ -14,43 +13,54 @@ public class Sokoban : MonoBehaviour
     public int[,] datosMapaColision;
 
     public List<GameObject> cajas;
+    private int levelActual;
+    public Level nivel;
+    public bool partidaIniciada;
 
     private void Start()
-    {
-        AsignarValoresIniciales();
-
+    {        
+        partidaIniciada = false;
+        AsignarValoresIniciales();        
         MostrarMapa();
+        partidaIniciada = true;
     }
+
+    public void CambiaNivel()
+    {
+        partidaIniciada = false;
+        QuitarEscenario();
+        levelActual++;
+        nivel.CargarNivel(levelActual);
+        MostrarMapa();
+        Debug.Log("Se inicia otro Nivel");
+        partidaIniciada = true;
+    }
+
+    void QuitarEscenario()
+    {
+        Transform[] hijos = padre.GetComponentsInChildren<Transform>();
+        foreach (Transform hijo in hijos)
+        {
+            if (hijo.gameObject != padre)
+            {
+                if (cajas.Contains(hijo.gameObject))
+                {
+                    cajas.Remove(hijo.gameObject);
+                }
+                Destroy(hijo.gameObject);
+            }
+        }
+        cajas.Clear();  
+    }
+
 
     void AsignarValoresIniciales()
     {
-        datosMapaVisual = new int[tamanyo, tamanyo]
-        {
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {2, 1, 0, 0, 0, 0, 0, 0, 1, 2},
-            {2, 1, 0, 4, 0, 5, 3, 0, 1, 2},
-            {2, 1, 0, 0, 0, 0, 0, 0, 1, 2},
-            {2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-        };
+        datosMapaVisual = new int[tamanyo, tamanyo];
+        datosMapaColision = new int[tamanyo, tamanyo];
 
-        datosMapaColision = new int[tamanyo, tamanyo]
-{
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},
-            {2, 2, 0, 1, 0, 0, 0, 0, 2, 2},
-            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-};
+        levelActual = 1;
+        nivel.CargarNivel(levelActual);
     }
 
     void MostrarMapa()
