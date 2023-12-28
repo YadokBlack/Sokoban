@@ -64,7 +64,7 @@ public class MuevePersonaje : MonoBehaviour
         int x = Mathf.FloorToInt(position.x / sokobanScript.alturaImagen);
         int y = Mathf.FloorToInt(position.y / sokobanScript.alturaImagen);
 
-        Debug.Log("Coordenadas: " + x + ", " + y);
+        // Debug.Log("Coordenadas: " + x + ", " + y);
 
         int siguienteX = x + Mathf.RoundToInt(direccion.x);
         int siguienteY = y + Mathf.RoundToInt(direccion.y);
@@ -113,8 +113,8 @@ public class MuevePersonaje : MonoBehaviour
 
         GameObject caja = sokobanScript.cajas.Find(c => Vector2.Distance(new Vector2(c.transform.position.x, c.transform.position.y), new Vector2(realX, realY)) < diferencia);
         
-        Debug.Log("cuantas cajas:" + sokobanScript.cajas.Count);
-        Debug.Log("Posicion Real:" + realX + "," + realY);
+        // Debug.Log("cuantas cajas:" + sokobanScript.cajas.Count);
+        // Debug.Log("Posicion Real:" + realX + "," + realY);
 
         if (caja != null )
         {
@@ -129,14 +129,14 @@ public class MuevePersonaje : MonoBehaviour
             float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
             float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
 
-            Debug.Log("Posicion anterior: " + caja.transform.position);
+            // Debug.Log("Posicion anterior: " + caja.transform.position);
 
             caja.transform.position = new Vector3(real2X, real2Y, caja.transform.position.z);
-            Debug.Log("Posicion nueva: " + caja.transform.position);
+            // Debug.Log("Posicion nueva: " + caja.transform.position);
         }
         else
         {
-            Debug.Log("No encontrada!!");
+            // Debug.Log("No encontrada!!");
         }
 
     }
