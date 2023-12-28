@@ -17,6 +17,8 @@ public class Sokoban : MonoBehaviour
     public Level nivel;
     public bool partidaIniciada;
 
+    const int Caja = 4;
+
     private void Start()
     {        
         partidaIniciada = false;
@@ -69,41 +71,64 @@ public class Sokoban : MonoBehaviour
         {
             for (int y = 0; y < tamanyo; y++)
             {
-                int valor = datosMapaVisual[x, y];
-                if (valor >= 0 && valor < prefabs.Length)
-                {                    
-                    if (valor > 3)
-                    {
-                        Instantiate(prefabs[0], new Vector3((x + 0.5f )* alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
-                    }
-                    else
-                    {
-                        Instantiate(prefabs[valor], new Vector3((x + 0.5f) * alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
-                    }
-                }
+                InstanciarObjetosFijos(x, y);
             }
         }
-
         for (int x = 0; x < tamanyo; x++)
         {
             for (int y = 0; y < tamanyo; y++)
             {
-                int valor = datosMapaVisual[x, y];
-                if (valor >= 0 && valor < prefabs.Length)
-                {                    
-                    if (valor > 3)
-                    {
-                        GameObject objeto;
-                        objeto = Instantiate(prefabs[valor], new Vector3((x + 0.5f) * alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
+                InstanciarObjetosMoviles(x, y);
+            }
+        }
+    }
 
-                        if (valor == 4)
-                        {
-                            Debug.Log("Caja en:" + x + "," + y);
-                            Debug.Log("Caja position:" + objeto.transform.position);
-                            cajas.Add(objeto);
-                        }
-                    }
-                }
+    private void InstanciarObjetosMoviles(int x, int y)
+    {
+        int valor = datosMapaVisual[x, y];
+        if (cantidadValida(valor))
+        {
+            if (ObjetosMoviles(valor))
+            {
+                InstanciaObjetoMovil(x, y, valor);
+            }
+        }
+    }
+
+    private void InstanciaObjetoMovil(int x, int y, int valor)
+    {
+        GameObject objeto = Instantiate(prefabs[valor], new Vector3((x + 0.5f) * alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
+
+        if (valor == Caja)
+        {
+            Debug.Log("Caja en:" + x + "," + y);
+            Debug.Log("Caja position:" + objeto.transform.position);
+            cajas.Add(objeto);
+        }
+    }
+
+    private static bool ObjetosMoviles(int valor)
+    {
+        return valor > 3;
+    }
+
+    private bool cantidadValida(int valor)
+    {
+        return valor >= 0 && valor < prefabs.Length;
+    }
+
+    private void InstanciarObjetosFijos(int x, int y)
+    {
+        int valor = datosMapaVisual[x, y];
+        if (cantidadValida(valor))
+        {
+            if (ObjetosMoviles(valor))
+            {
+                Instantiate(prefabs[0], new Vector3((x + 0.5f) * alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
+            }
+            else
+            {
+                Instantiate(prefabs[valor], new Vector3((x + 0.5f) * alturaImagen, (y + 0.5f) * alturaImagen, 0), Quaternion.identity, padre.transform);
             }
         }
     }
