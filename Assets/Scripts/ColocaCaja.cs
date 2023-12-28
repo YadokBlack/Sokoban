@@ -27,23 +27,17 @@ public class ColocaCaja : MonoBehaviour
         if (EstaEnCasillaCorrecta())
         {
             CambiarColor(colorCorrecto);
-           // Debug.Log("Colocada en su sitio");
         }
         else
         {
             CambiarColor(colorNormal);
-           // Debug.Log("fuera de lugar");
         }
     }
 
-    bool EstaEnCasillaCorrecta()
+    public bool EstaEnCasillaCorrecta()
     {
         int x = Mathf.FloorToInt(transform.position.x / sokobanScript.alturaImagen);
         int y = Mathf.FloorToInt(transform.position.y / sokobanScript.alturaImagen);
-
-        Debug.Log("Comprobando caja que esta en:" + x + ", " + y);
-        Debug.Log("valor " + sokobanScript.datosMapaVisual[x, y]);
-
         return sokobanScript.datosMapaVisual[x, y] == 3;
     }
 
