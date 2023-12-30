@@ -6,25 +6,22 @@ public class Sokoban : MonoBehaviour
 {
     public GameObject[] prefabs;
     public GameObject padre;
-
     public int alturaImagen = 60;
     public const int tamanyo = 10;
     public int[,] datosMapaVisual;
     public int[,] datosMapaColision;
-
     public List<GameObject> cajas;
     private int levelActual;
     public Level nivel;
     public bool partidaIniciada;
-
     const int Caja = 4;
+    public int nivelInicial = 1;
 
     private void Start()
     {        
         partidaIniciada = false;
         AsignarValoresIniciales();        
-        MostrarMapa();
-        partidaIniciada = true;
+        MostrarMapa();        
     }
 
     public void CambiaNivel()
@@ -35,7 +32,6 @@ public class Sokoban : MonoBehaviour
         nivel.CargarNivel(levelActual);
         MostrarMapa();
         Debug.Log("Se inicia otro Nivel");
-        partidaIniciada = true;
     }
 
     void QuitarEscenario()
@@ -55,13 +51,12 @@ public class Sokoban : MonoBehaviour
         cajas.Clear();  
     }
 
-
     void AsignarValoresIniciales()
     {
         datosMapaVisual = new int[tamanyo, tamanyo];
         datosMapaColision = new int[tamanyo, tamanyo];
 
-        levelActual = 1;
+        levelActual = nivelInicial;
         nivel.CargarNivel(levelActual);
     }
 
@@ -81,6 +76,7 @@ public class Sokoban : MonoBehaviour
                 InstanciarObjetosMoviles(x, y);
             }
         }
+        partidaIniciada = true;
     }
 
     private void InstanciarObjetosMoviles(int x, int y)
