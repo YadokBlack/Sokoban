@@ -4,27 +4,32 @@ using UnityEngine;
 
 public class MuevePersonaje : MonoBehaviour
 {
-    public float velocidad = 1.0f;
     public Sokoban sokobanScript;
+    public ContadorPasos contadorPasos;
+    public float velocidad = 1.0f;    
     bool puedeMover;
     const int sinColision = 0;
     const int colisionMovil = 1;
     const int conColision = 2;
-    public ContadorPasos contadorPasos;
-    
+     
     private void Start()
-    {        
-        contadorPasos = FindObjectOfType<ContadorPasos>();
-        if (contadorPasos == null ) 
-        {
-            Debug.LogError("No se encontró el Contador de Pasos.");
-        }
+    {
+        AsignarObjetos();
         contadorPasos.Inicializar();
         puedeMover = false;
+    }
+
+    private void AsignarObjetos()
+    {
         sokobanScript = FindObjectOfType<Sokoban>();
         if (sokobanScript == null)
         {
             Debug.LogError("No se encontró el script Sokoban en la escena.");
+        }
+        contadorPasos = FindObjectOfType<ContadorPasos>();
+        if (contadorPasos == null)
+        {
+            Debug.LogError("No se encontró el Contador de Pasos.");
         }
     }
 
