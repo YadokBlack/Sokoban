@@ -10,9 +10,16 @@ public class MuevePersonaje : MonoBehaviour
     const int sinColision = 0;
     const int colisionMovil = 1;
     const int conColision = 2;
-
+    public ContadorPasos contadorPasos;
+    
     private void Start()
-    {
+    {        
+        contadorPasos = FindObjectOfType<ContadorPasos>();
+        if (contadorPasos == null ) 
+        {
+            Debug.LogError("No se encontró el Contador de Pasos.");
+        }
+        contadorPasos.Inicializar();
         puedeMover = false;
         sokobanScript = FindObjectOfType<Sokoban>();
         if (sokobanScript == null)
@@ -39,7 +46,7 @@ public class MuevePersonaje : MonoBehaviour
         direccion.Normalize();
         if(!Bloqueado(transform.position, direccion))
         {
-            DesplazaPersonaje(direccion);
+            DesplazaPersonaje(direccion);            
         }
     }
 
@@ -51,6 +58,7 @@ public class MuevePersonaje : MonoBehaviour
         }
         Vector2 movimiento = direccion * sokobanScript.alturaImagen;
         transform.Translate(movimiento);
+        contadorPasos.Aumenta();
     }
 
     private bool ColisionaConCaja(Vector2 direccion)
@@ -83,7 +91,7 @@ public class MuevePersonaje : MonoBehaviour
             if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
             
             int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
-            return siguiente2Valor == conColision;
+            return siguiente2Valor == conColision || siguiente2Valor == colisionMovil;
         }
         return valor == conColision;
     }
