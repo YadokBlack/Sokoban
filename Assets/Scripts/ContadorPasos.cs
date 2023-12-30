@@ -19,6 +19,11 @@ public class ContadorPasos : MonoBehaviour
         ActualizaTexto();
     }
 
+    public bool Inicio()
+    {
+        return pasos == 0;
+    }
+
     public void ActualizaTexto()
     {
         textoPasos.text = "Pasos: " + pasos.ToString();

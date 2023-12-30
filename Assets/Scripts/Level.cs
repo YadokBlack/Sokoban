@@ -12,14 +12,22 @@ public class Level : MonoBehaviour
     }
 
     public Sokoban sokoban;
+    public ContadorTiempo contadorTiempo;
     DatosNivel nivel;
     private int levelActual;
     public int nivelInicial = 1;
     public TextMeshProUGUI textNombreNivel;
+    // bool jugando = false;
 
     public void Inicializar()
     {
         levelActual = nivelInicial;
+    }
+
+    public void IniciaTiempoPartida()
+    {
+   //     jugando = true;
+        contadorTiempo.IniciarCuentaTiempo();
     }
 
     public void Cargar()

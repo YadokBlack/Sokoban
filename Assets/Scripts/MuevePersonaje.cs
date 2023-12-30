@@ -63,6 +63,8 @@ public class MuevePersonaje : MonoBehaviour
         }
         Vector2 movimiento = direccion * sokobanScript.alturaImagen;
         transform.Translate(movimiento);
+
+        if (contadorPasos.Inicio()) sokobanScript.nivel.IniciaTiempoPartida();
         contadorPasos.Aumenta();
     }
 
