@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 public class Level : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Level : MonoBehaviour
     DatosNivel nivel;
     private int levelActual;
     public int nivelInicial = 1;
+    public TextMeshProUGUI textNombreNivel;
 
     public void Inicializar()
     {
@@ -61,6 +63,7 @@ public class Level : MonoBehaviour
     private void CargaArchivoNivel()
     {
         string nombre = nivel.nombre;
+        textNombreNivel.text = nombre;
         string[] lineas = nivel.lineas;
         Debug.Log("Nombre: " + nombre);
         ActualizaMapaVisual();
