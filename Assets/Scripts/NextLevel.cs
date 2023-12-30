@@ -19,6 +19,7 @@ public class NextLevel : MonoBehaviour
             if (LevelCompletado())
             {
                 Debug.Log("Nivel Completado");
+                sokobanScript.nivel.contadorTiempo.PararCuenta();
                 ProximoLevel();
             }
         }

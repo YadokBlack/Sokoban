@@ -27,6 +27,7 @@ public class Sokoban : MonoBehaviour
     {
         partidaIniciada = false;
         QuitarEscenario();
+        nivel.contadorTiempo.Reiniciar();
         nivel.Aumenta();
         nivel.Cargar();
         MostrarMapa();

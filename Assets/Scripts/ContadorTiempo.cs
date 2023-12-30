@@ -15,23 +15,30 @@ public class ContadorTiempo : MonoBehaviour
         if (cuentaIniciada && !parar)
         {
             tiempoTranscurrido += Time.deltaTime;
-            ActualizarTextoTiempo();
+            ActualizarTexto();
         }
     }
 
-    public void IniciarCuentaTiempo()
+    public void IniciarCuenta()
     {
         tiempoTranscurrido = 0f;
         cuentaIniciada = true;
         parar = false;
     }
 
-    public void PararCuentaTiempo() 
+    public void PararCuenta() 
     {
         parar = true;
     }
 
-    private void ActualizarTextoTiempo()
+    public void Reiniciar()
+    {
+        tiempoTranscurrido = 0f;
+        cuentaIniciada = false;
+        parar = false;
+    }
+
+    private void ActualizarTexto()
     {
         int minutos = Mathf.FloorToInt(tiempoTranscurrido / 60);
         int segundos = Mathf.FloorToInt(tiempoTranscurrido % 60);

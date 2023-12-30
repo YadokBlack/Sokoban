@@ -17,7 +17,6 @@ public class Level : MonoBehaviour
     private int levelActual;
     public int nivelInicial = 1;
     public TextMeshProUGUI textNombreNivel;
-    // bool jugando = false;
 
     public void Inicializar()
     {
@@ -26,8 +25,7 @@ public class Level : MonoBehaviour
 
     public void IniciaTiempoPartida()
     {
-   //     jugando = true;
-        contadorTiempo.IniciarCuentaTiempo();
+        contadorTiempo.IniciarCuenta();
     }
 
     public void Cargar()
