@@ -11,11 +11,10 @@ public class Sokoban : MonoBehaviour
     public int[,] datosMapaVisual;
     public int[,] datosMapaColision;
     public List<GameObject> cajas;
-    private int levelActual;
     public Level nivel;
     public bool partidaIniciada;
     const int Caja = 4;
-    public int nivelInicial = 1;
+
 
     private void Start()
     {        
@@ -28,8 +27,8 @@ public class Sokoban : MonoBehaviour
     {
         partidaIniciada = false;
         QuitarEscenario();
-        levelActual++;
-        nivel.CargarNivel(levelActual);
+        nivel.Aumenta();
+        nivel.Cargar();
         MostrarMapa();
         Debug.Log("Se inicia otro Nivel");
     }
@@ -56,8 +55,8 @@ public class Sokoban : MonoBehaviour
         datosMapaVisual = new int[tamanyo, tamanyo];
         datosMapaColision = new int[tamanyo, tamanyo];
 
-        levelActual = nivelInicial;
-        nivel.CargarNivel(levelActual);
+        nivel.Inicializar();
+        nivel.Cargar();
     }
 
     void MostrarMapa()

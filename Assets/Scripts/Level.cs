@@ -12,11 +12,23 @@ public class Level : MonoBehaviour
 
     public Sokoban sokoban;
     DatosNivel nivel;
- 
-    public void CargarNivel(int nivel)
+    private int levelActual;
+    public int nivelInicial = 1;
+
+    public void Inicializar()
+    {
+        levelActual = nivelInicial;
+    }
+
+    public void Cargar()
     {
         Debug.Log("Cargando Nivel ...");
-        CargarDatosNivel(GenerarRutaArchivoNivel(nivel));
+        CargarDatosNivel(GenerarRutaArchivoNivel(levelActual));
+    }
+
+    public void Aumenta()
+    {
+        levelActual++;
     }
 
     public void CargarDatosNivel(string rutaArchivo)
