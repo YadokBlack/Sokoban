@@ -111,7 +111,7 @@ public class MuevePersonaje : MonoBehaviour
         if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
 
         int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
-        return siguiente2Valor == conColision || siguiente2Valor == colisionMovil;        
+        return ColisionaConMuro(siguiente2Valor) || ColisionaConCaja(siguiente2Valor);        
     }
 
     private static bool FueraDeRango(int siguienteX, int siguienteY)
@@ -128,15 +128,10 @@ public class MuevePersonaje : MonoBehaviour
         float realY = (siguienteY + 0.5f) * sokobanScript.alturaImagen;
         float diferencia = sokobanScript.alturaImagen * 0.25f;
         GameObject caja = sokobanScript.cajas.Find(c => Vector2.Distance(new Vector2(c.transform.position.x, c.transform.position.y), new Vector2(realX, realY)) < diferencia);
-
-        if (caja != null)
-        {
-            DesplazarCaja(direccion, siguienteX, siguienteY, caja);
-        }
-        else
-        {
-            Debug.Log("No encontrada!!");
-        }
+        
+        if (caja == null) Debug.LogError("No encontrada!!");
+        
+        DesplazarCaja(direccion, siguienteX, siguienteY, caja);
     }
 
     private void DesplazarCaja(Vector2 direccion, int siguienteX, int siguienteY, GameObject caja)
