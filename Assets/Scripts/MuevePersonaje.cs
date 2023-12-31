@@ -87,20 +87,35 @@ public class MuevePersonaje : MonoBehaviour
         int siguienteY = SiguientePosicion(position.y, direccion.y);
 
         if (FueraDeRango(siguienteX, siguienteY)) return false;
-        
+
         int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
 
-        if (valor == colisionMovil)
+        if (ColisionaConCaja(valor))
         {
-            int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
-            int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
-            
-            if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
-            
-            int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
-            return siguiente2Valor == conColision || siguiente2Valor == colisionMovil;
+            return ColisionDetrasCaja(siguienteX, siguienteY, direccion);
         }
+        return ColisionaConMuro(valor);
+    }
+
+    private static bool ColisionaConCaja(int valor)
+    {
+        return valor == colisionMovil;
+    }
+
+    private static bool ColisionaConMuro(int valor)
+    {
         return valor == conColision;
+    }
+
+    private bool ColisionDetrasCaja(int siguienteX, int siguienteY, Vector2 direccion)
+    {
+        int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
+        int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
+
+        if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
+
+        int siguiente2Valor = sokobanScript.datosMapaColision[siguiente2X, siguiente2Y];
+        return siguiente2Valor == conColision || siguiente2Valor == colisionMovil;        
     }
 
     private static bool FueraDeRango(int siguienteX, int siguienteY)
