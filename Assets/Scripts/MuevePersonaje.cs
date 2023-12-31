@@ -90,11 +90,7 @@ public class MuevePersonaje : MonoBehaviour
 
         int valor = sokobanScript.datosMapaColision[siguienteX, siguienteY];
 
-        if (ColisionaConCaja(valor))
-        {
-            return ColisionDetrasCaja(siguienteX, siguienteY, direccion);
-        }
-        return ColisionaConMuro(valor);
+        return (ColisionaConCaja(valor)) ? ColisionDetrasCaja(siguienteX, siguienteY, direccion) : ColisionaConMuro(valor);
     }
 
     private static bool ColisionaConCaja(int valor)
