@@ -38,6 +38,7 @@ public class MuevePersonaje : MonoBehaviour
         MoverPersonaje();
     }
 
+    // personaje
     public void Mover(Vector2 direccion)
     {
         if (Mathf.Abs(direccion.x) < 0.5f)
@@ -55,6 +56,7 @@ public class MuevePersonaje : MonoBehaviour
         }
     }
 
+    // personaje
     private void DesplazaPersonaje(Vector2 direccion)
     {
         if (ColisionaConCaja(direccion))
@@ -68,11 +70,13 @@ public class MuevePersonaje : MonoBehaviour
         contadorPasos.Aumenta();
     }
 
+    // colision, mapa o caja
     private bool ColisionaConCaja(Vector2 direccion)
     {
         return ValorCasillaColision(transform.position, direccion) == colisionMovil;
     }
 
+    // colision o mapa
     int ValorCasillaColision(Vector3 position, Vector2 direccion)
     {
         int siguienteX = SiguientePosicion(position.x, direccion.x);
@@ -81,6 +85,7 @@ public class MuevePersonaje : MonoBehaviour
         return valor;
     }
 
+    // colision o mapa
     bool Bloqueado(Vector3 position, Vector2 direccion)
     {
         int siguienteX = SiguientePosicion(position.x, direccion.x);
@@ -93,16 +98,19 @@ public class MuevePersonaje : MonoBehaviour
         return (ColisionaConCaja(valor)) ? ColisionDetrasCaja(siguienteX, siguienteY, direccion) : ColisionaConMuro(valor);
     }
 
+    // colision o mapa
     private static bool ColisionaConCaja(int valor)
     {
         return valor == colisionMovil;
     }
 
+    // colision o mapa
     private static bool ColisionaConMuro(int valor)
     {
         return valor == conColision;
     }
 
+    // colision, mapa o caja
     private bool ColisionDetrasCaja(int siguienteX, int siguienteY, Vector2 direccion)
     {
         int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
@@ -114,11 +122,13 @@ public class MuevePersonaje : MonoBehaviour
         return ColisionaConMuro(siguiente2Valor) || ColisionaConCaja(siguiente2Valor);        
     }
 
+    // mapa
     private static bool FueraDeRango(int siguienteX, int siguienteY)
     {
         return siguienteX < 0 || siguienteX >= Sokoban.tamanyo || siguienteY < 0 || siguienteY >= Sokoban.tamanyo;
     }
 
+    // caja
     void MoverCaja(Vector3 position, Vector2 direccion)
     {
         int siguienteX = SiguientePosicion(position.x, direccion.x);
@@ -134,6 +144,7 @@ public class MuevePersonaje : MonoBehaviour
         DesplazarCaja(direccion, siguienteX, siguienteY, caja);
     }
 
+    // caja 
     private void DesplazarCaja(Vector2 direccion, int siguienteX, int siguienteY, GameObject caja)
     {
         int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
@@ -145,11 +156,13 @@ public class MuevePersonaje : MonoBehaviour
         caja.transform.position = new Vector3(real2X, real2Y, caja.transform.position.z);
     }
 
+
     private int SiguientePosicion(float position, float direccion)
     {
         return Mathf.FloorToInt(position / sokobanScript.alturaImagen) + Mathf.RoundToInt(direccion);
     }
 
+    // personaje
     void MoverPersonaje()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -171,4 +184,3 @@ public class MuevePersonaje : MonoBehaviour
         }
     }
 }
-
