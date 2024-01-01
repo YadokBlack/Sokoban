@@ -58,8 +58,8 @@ public class ColisionMapa : MonoBehaviour
 
     private bool ColisionDetrasCaja(int siguienteX, int siguienteY, Vector2 direccion)
     {
-        int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
-        int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
+        int siguiente2X = AumentarDireccionAPosicion(siguienteX, direccion.x);
+        int siguiente2Y = AumentarDireccionAPosicion(siguienteY, direccion.y);
 
         if (FueraDeRango(siguiente2X, siguiente2Y)) return false;
 
@@ -80,9 +80,9 @@ public class ColisionMapa : MonoBehaviour
     {
         int siguienteX = SiguientePosicion(position.x, direccion.x);
         int siguienteY = SiguientePosicion(position.y, direccion.y);
-        Debug.Log("Caja en:" + siguienteX + "," + siguienteY);
-        float realX = (siguienteX + 0.5f) * sokobanScript.alturaImagen;
-        float realY = (siguienteY + 0.5f) * sokobanScript.alturaImagen;
+
+        float realX = ObtenerPosicion(siguienteX);
+        float realY = ObtenerPosicion(siguienteY);
         float diferencia = sokobanScript.alturaImagen * 0.25f;
         GameObject caja = sokobanScript.cajas.Find(c => Vector2.Distance(new Vector2(c.transform.position.x, c.transform.position.y), new Vector2(realX, realY)) < diferencia);
 
@@ -93,12 +93,24 @@ public class ColisionMapa : MonoBehaviour
 
     private void DesplazarCaja(Vector2 direccion, int siguienteX, int siguienteY, GameObject caja)
     {
-        int siguiente2X = siguienteX + Mathf.RoundToInt(direccion.x);
-        int siguiente2Y = siguienteY + Mathf.RoundToInt(direccion.y);
+        int siguiente2X = AumentarDireccionAPosicion(siguienteX, direccion.x);
+        int siguiente2Y = AumentarDireccionAPosicion(siguienteY, direccion.y);
         sokobanScript.datosMapaColision[siguienteX, siguienteY] = sinColision;
         sokobanScript.datosMapaColision[siguiente2X, siguiente2Y] = colisionMovil;
-        float real2X = (siguiente2X + 0.5f) * sokobanScript.alturaImagen;
-        float real2Y = (siguiente2Y + 0.5f) * sokobanScript.alturaImagen;
+        float real2X = ObtenerPosicion(siguiente2X);
+        float real2Y = ObtenerPosicion(siguiente2Y);
         caja.transform.position = new Vector3(real2X, real2Y, caja.transform.position.z);
     }
+
+    private int AumentarDireccionAPosicion(int posicion, float direccion)
+    {
+        return posicion + Mathf.RoundToInt(direccion);
+    }
+
+    private float ObtenerPosicion(int valor)
+    {
+        return (valor + 0.5f) * sokobanScript.alturaImagen;
+    }
+
+
 }
