@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColisionMapa 
+public class MovimientoCaja 
 {
     public Sokoban sokobanScript;
     const int sinColision = 0;
     const int colisionMovil = 1;
     const int conColision = 2;
 
-    public ColisionMapa(Sokoban soko)
+    public MovimientoCaja(Sokoban soko)
     {
         sokobanScript = soko;
     }
 
-    public void MueveCajaSiColisiona(Vector3 position, Vector2 direccion)
+    public void EmpujarCaja(Vector3 position, Vector2 direccion)
     {
         if (ColisionaConCaja(position, direccion))
         {
