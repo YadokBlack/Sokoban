@@ -29,7 +29,7 @@ public class MuevePersonaje : MonoBehaviour
         {
             Debug.LogError("No se encontró el Contador de Pasos.");
         }
-        colisionMapa = new ColisionMapa(sokobanScript);     
+        colisionMapa = new ColisionMapa(sokobanScript);
     }
 
     private void Update()

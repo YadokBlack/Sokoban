@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColisionMapa : MonoBehaviour
+public class ColisionMapa 
 {
     public Sokoban sokobanScript;
     const int sinColision = 0;
@@ -16,15 +16,15 @@ public class ColisionMapa : MonoBehaviour
 
     public void MueveCajaSiColisiona(Vector3 position, Vector2 direccion)
     {
-        if (ColisionaConCaja(direccion))
+        if (ColisionaConCaja(position, direccion))
         {
-            MoverCaja(transform.position, direccion);
+            MoverCaja(position, direccion);
         }
     }
 
-    private bool ColisionaConCaja(Vector2 direccion)
+    private bool ColisionaConCaja(Vector3 position, Vector2 direccion)
     {
-        return ValorCasillaColision(transform.position, direccion) == colisionMovil;
+        return ValorCasillaColision(position, direccion) == colisionMovil;
     }
 
     private int ValorCasillaColision(Vector3 position, Vector2 direccion)
@@ -111,6 +111,4 @@ public class ColisionMapa : MonoBehaviour
     {
         return (valor + 0.5f) * sokobanScript.alturaImagen;
     }
-
-
 }
