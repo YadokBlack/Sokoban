@@ -31,7 +31,7 @@ public class Level : MonoBehaviour
     public void Cargar()
     {
         Debug.Log("Cargando Nivel ...");
-        CargarDatosNivel(GenerarRutaArchivoNivel(levelActual));
+        CargarDatosNivel(GenerarRutaArchivoNivel(levelActual));        
     }
 
     public void Aumenta()
@@ -39,31 +39,27 @@ public class Level : MonoBehaviour
         levelActual++;
     }
 
-    public void CargarDatosNivel(string rutaArchivo)
+    public string NombreNivelActual()
+    {
+        return nivel.nombre;
+    }
+
+    private void CargarDatosNivel(string rutaArchivo)
     {
         nivel = null;
-        if (File.Exists(rutaArchivo))
-        {
-            LeerArchivo(rutaArchivo);
-        }
-        else
-        {
-            Debug.LogError("Archivo no encontrado en la ruta: " + rutaArchivo);
-        }
+        if (!File.Exists(rutaArchivo)) Debug.LogError("Archivo no encontrado en la ruta: " + rutaArchivo);            
+        
+        LeerArchivo(rutaArchivo);
     }
 
     private void LeerArchivo(string rutaArchivo)
     {
         string contenidoArchivo = File.ReadAllText(rutaArchivo);
         nivel = JsonUtility.FromJson<DatosNivel>(contenidoArchivo);
-        if (nivel == null)
-        {
-            Debug.LogError("Error al deserializar el archivo JSON.");
-        }
-        else
-        {
-            CargaArchivoNivel();
-        }
+        
+        if (nivel == null) Debug.LogError("Error al deserializar el archivo JSON.");
+        
+        CargaArchivoNivel();        
     }
 
     private void CargaArchivoNivel()
@@ -74,7 +70,7 @@ public class Level : MonoBehaviour
         Debug.Log("Nombre: " + nombre);
         ActualizaMapaVisual();
         ActualizaMapaColision();
-        //  Debug.Log("Nombre del nivel cargado: " + nivel.nombre);
+        // Debug.Log("Nombre del nivel cargado: " + nivel.nombre);
         //  ImprimirMapa(sokoban.datosMapaVisual, "Visual");
         //  ImprimirMapa(sokoban.datosMapaColision, "Colision");
     }
@@ -115,8 +111,7 @@ public class Level : MonoBehaviour
     string GenerarRutaArchivoNivel(int numeroDeNivel)
     {
         string nombreArchivo = $"level{numeroDeNivel:D2}.json"; 
-        string rutaCompleta = Path.Combine(ObtenerRutaDelEjecutable(), "levels", nombreArchivo);
-        return rutaCompleta;
+        return Path.Combine(ObtenerRutaDelEjecutable(), "levels", nombreArchivo);
     }
 
     private void ImprimirMapa(int[,] mapa, string titulo)
