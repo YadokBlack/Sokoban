@@ -6,7 +6,7 @@ public class MuevePersonaje : MonoBehaviour
 {
     public Sokoban sokobanScript;
     public ContadorPasos contadorPasos;
-    public ColisionMapa colisionMapa;
+    public MovimientoCaja colisionMapa;
     public float velocidad = 1.0f;    
     bool puedeMover;
      
@@ -29,7 +29,7 @@ public class MuevePersonaje : MonoBehaviour
         {
             Debug.LogError("No se encontró el Contador de Pasos.");
         }
-        colisionMapa = new ColisionMapa(sokobanScript);
+        colisionMapa = new MovimientoCaja(sokobanScript);
     }
 
     private void Update()
@@ -56,12 +56,12 @@ public class MuevePersonaje : MonoBehaviour
 
     private void DesplazaPersonaje(Vector2 direccion)
     {
-        colisionMapa.MueveCajaSiColisiona(transform.position, direccion);
+        colisionMapa.EmpujarCaja(transform.position, direccion);
 
         Vector2 movimiento = direccion * sokobanScript.alturaImagen;
         transform.Translate(movimiento);
 
-        if (contadorPasos.Inicio()) sokobanScript.nivel.IniciaTiempoPartida();
+        if (contadorPasos.Inicio()) sokobanScript.IniciaContarTiempo();
         contadorPasos.Aumenta();
     }
 
