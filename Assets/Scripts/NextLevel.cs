@@ -5,6 +5,9 @@ using UnityEngine;
 public class NextLevel : MonoBehaviour
 {
     public Sokoban sokobanScript;
+    public Puntuacion puntuacion;
+    public ContadorPasos contadorPasos;
+    public Level nivel;
     public int estados;
 
     private void Awake()
@@ -18,8 +21,6 @@ public class NextLevel : MonoBehaviour
         {
             if (LevelCompletado())
             {
-                Debug.Log("Nivel Completado");
-                sokobanScript.nivel.contadorTiempo.PararCuenta();
                 ProximoLevel();
             }
         }
@@ -28,6 +29,16 @@ public class NextLevel : MonoBehaviour
         {
             estados = 1;
         }
+    }
+
+    public void CargaLevel()
+    {
+       // PlayerPrefs.DeleteAll();
+        nivel.Inicializar();
+        nivel.Cargar();
+        
+        puntuacion.CargaDatosNivel( nivel.NombreNivelActual() );
+        sokobanScript.MostrarMapa();
     }
 
     public bool LevelCompletado()
@@ -41,8 +52,15 @@ public class NextLevel : MonoBehaviour
 
     public void ProximoLevel()
     {
+        Debug.Log("Nivel Completado");
+        nivel.contadorTiempo.PararCuenta();
+        puntuacion.Guardar(nivel.NombreNivelActual(), contadorPasos.pasos, nivel.contadorTiempo.Tiempo());
         estados = 0;
-        sokobanScript.CambiaNivel();
-        Debug.Log("Ha cargado el siguiente nivel");
+        sokobanScript.QuitarEscenario();
+        nivel.contadorTiempo.Reiniciar();
+        nivel.Aumenta();
+        nivel.Cargar();
+        puntuacion.CargaDatosNivel(nivel.NombreNivelActual());
+        sokobanScript.MostrarMapa();
     }
 }
