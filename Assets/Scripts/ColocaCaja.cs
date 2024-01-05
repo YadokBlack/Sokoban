@@ -13,7 +13,6 @@ public class ColocaCaja : MonoBehaviour
     private void Start()
     {
         sokobanScript = FindObjectOfType<Sokoban>();
-
         if (sokobanScript == null)
         {
             Debug.LogError("No se encontró el script Sokoban en la escena.");

@@ -19,6 +19,11 @@ public class ContadorTiempo : MonoBehaviour
         }
     }
 
+    public float Tiempo()
+    {
+        return tiempoTranscurrido;
+    }
+
     public void IniciarCuenta()
     {
         tiempoTranscurrido = 0f;
@@ -34,6 +39,7 @@ public class ContadorTiempo : MonoBehaviour
     public void Reiniciar()
     {
         tiempoTranscurrido = 0f;
+        ActualizarTexto();
         cuentaIniciada = false;
         parar = false;
     }
