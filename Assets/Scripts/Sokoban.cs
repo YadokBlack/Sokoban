@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Sokoban : MonoBehaviour
 {
+    public NextLevel proximoNivel;
     public GameObject[] prefabs;
     public GameObject padre;
     public int alturaImagen = 60;
@@ -11,30 +12,21 @@ public class Sokoban : MonoBehaviour
     public int[,] datosMapaVisual;
     public int[,] datosMapaColision;
     public List<GameObject> cajas;
-    public Level nivel;
     public bool partidaIniciada;
     const int Caja = 4;
-
 
     private void Start()
     {        
         partidaIniciada = false;
-        AsignarValoresIniciales();        
-        MostrarMapa();        
+        AsignarValoresIniciales();
     }
 
-    public void CambiaNivel()
+    public void IniciaContarTiempo()
     {
-        partidaIniciada = false;
-        QuitarEscenario();
-        nivel.contadorTiempo.Reiniciar();
-        nivel.Aumenta();
-        nivel.Cargar();
-        MostrarMapa();
-        Debug.Log("Se inicia otro Nivel");
+        proximoNivel.nivel.contadorTiempo.IniciarCuenta();
     }
 
-    void QuitarEscenario()
+    public void QuitarEscenario()
     {
         Transform[] hijos = padre.GetComponentsInChildren<Transform>();
         foreach (Transform hijo in hijos)
@@ -48,7 +40,7 @@ public class Sokoban : MonoBehaviour
                 Destroy(hijo.gameObject);
             }
         }
-        cajas.Clear();  
+        cajas.Clear();
     }
 
     void AsignarValoresIniciales()
@@ -56,11 +48,13 @@ public class Sokoban : MonoBehaviour
         datosMapaVisual = new int[tamanyo, tamanyo];
         datosMapaColision = new int[tamanyo, tamanyo];
 
-        nivel.Inicializar();
-        nivel.Cargar();
+        //   proximoNivel.nivel.Inicializar();
+        //   proximoNivel.nivel.Cargar();
+        //   MostrarMapa();
+        proximoNivel.CargaLevel();
     }
 
-    void MostrarMapa()
+    public void MostrarMapa()
     {
         for (int x = 0; x < tamanyo; x++)
         {
@@ -97,8 +91,8 @@ public class Sokoban : MonoBehaviour
 
         if (valor == Caja)
         {
-            Debug.Log("Caja en:" + x + "," + y);
-            Debug.Log("Caja position:" + objeto.transform.position);
+            // Debug.Log("Caja en:" + x + "," + y);
+            // Debug.Log("Caja position:" + objeto.transform.position);
             cajas.Add(objeto);
         }
     }
