@@ -23,6 +23,10 @@ public class NextLevel : MonoBehaviour
             {
                 ProximoLevel();
             }
+            if (Input.GetKeyDown(KeyCode.R) )
+            {
+                ResetLevel();
+            }
         }
 
         if ( estados == 0 && sokobanScript.partidaIniciada)
@@ -48,6 +52,16 @@ public class NextLevel : MonoBehaviour
             if (!caja.GetComponent<ColocaCaja>().EstaEnCasillaCorrecta()) return false;
         }
         return true;
+    }
+
+    public void ResetLevel()
+    {
+        estados = 0;
+        sokobanScript.QuitarEscenario();
+        nivel.contadorTiempo.Reiniciar();        
+        nivel.Cargar();
+        puntuacion.CargaDatosNivel(nivel.NombreNivelActual());
+        sokobanScript.MostrarMapa();
     }
 
     public void ProximoLevel()
