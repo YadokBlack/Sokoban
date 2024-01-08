@@ -20,8 +20,8 @@ public class Puntuacion : MonoBehaviour
     {
         int pasosGuardados = PlayerPrefs.GetInt("Pasos_" + nombreNivel, 999);
         float tiempoGuardado = PlayerPrefs.GetFloat("Tiempo_" + nombreNivel, 5999);
-        Debug.Log("comprobando datos a guardar " + pasos + " - " + tiempo);
-        Debug.Log("comprobando datos leidos " + pasosGuardados + " - " + tiempoGuardado);
+        // Debug.Log("comprobando datos a guardar " + pasos + " - " + tiempo);
+        // Debug.Log("comprobando datos leidos " + pasosGuardados + " - " + tiempoGuardado);
         if ((pasos <= pasosGuardados && tiempo < tiempoGuardado))
         {
             GuardaDatosNivel(nombreNivel, pasos, tiempo);
@@ -57,7 +57,8 @@ public class Puntuacion : MonoBehaviour
         float tiempoTranscurrido =  ObtenerTiempo(nombreNivel);
         int minutos = Mathf.FloorToInt(tiempoTranscurrido / 60);
         int segundos = Mathf.FloorToInt(tiempoTranscurrido % 60);
-        textTiempo.text = string.Format("{0} {0:00}:{1:00}", etiquetaTiempo, minutos, segundos);
-        Debug.Log("-->" + ObtenerPasos(nombreNivel).ToString() + " - " + ObtenerTiempo(nombreNivel));
+        textTiempo.text = $"{etiquetaTiempo} {minutos:00}:{segundos:00}";
+        // Debug.Log("-->" + ObtenerPasos(nombreNivel).ToString() + " - " + ObtenerTiempo(nombreNivel));
+        // Debug.Log("contiene:" + textTiempo.text);
     }
 }
