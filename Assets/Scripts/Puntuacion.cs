@@ -7,6 +7,8 @@ public class Puntuacion : MonoBehaviour
 {
     public TextMeshProUGUI textPasos;
     public TextMeshProUGUI textTiempo;
+    public string etiquetaPasos;
+    public string etiquetaTiempo;
 
     public void GuardarMax(string nombreNivel)
     {
@@ -51,11 +53,11 @@ public class Puntuacion : MonoBehaviour
     public void CargaDatosNivel(string nombreNivel)
     {
         Debug.Log("Carga datos nivel " +  nombreNivel);
-        textPasos.text = "Pasos: " + ObtenerPasos(nombreNivel).ToString();
+        textPasos.text = etiquetaPasos + " " + ObtenerPasos(nombreNivel).ToString();
         float tiempoTranscurrido =  ObtenerTiempo(nombreNivel);
         int minutos = Mathf.FloorToInt(tiempoTranscurrido / 60);
         int segundos = Mathf.FloorToInt(tiempoTranscurrido % 60);
-        textTiempo.text = string.Format("Tiempo {0:00}:{1:00}", minutos, segundos);
+        textTiempo.text = string.Format("{0} {0:00}:{1:00}", etiquetaTiempo, minutos, segundos);
         Debug.Log("-->" + ObtenerPasos(nombreNivel).ToString() + " - " + ObtenerTiempo(nombreNivel));
     }
 }
