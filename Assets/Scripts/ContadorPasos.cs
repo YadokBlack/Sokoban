@@ -7,6 +7,7 @@ public class ContadorPasos : MonoBehaviour
 {
     public int pasos;
     public TextMeshProUGUI textoPasos;
+    public string etiquetaPasos;
 
     public void Inicializar()
     {
@@ -26,6 +27,6 @@ public class ContadorPasos : MonoBehaviour
 
     public void ActualizaTexto()
     {
-        textoPasos.text = "Pasos: " + pasos.ToString();
+        textoPasos.text =  etiquetaPasos + " " + pasos.ToString();
     }
 }
