@@ -6,6 +6,7 @@ using UnityEngine;
 public class ContadorTiempo : MonoBehaviour
 {
     public TextMeshProUGUI textoTiempo;
+    public string etiquetaTiempo;
     private float tiempoTranscurrido;
     private bool cuentaIniciada;
     private bool parar;
@@ -48,7 +49,6 @@ public class ContadorTiempo : MonoBehaviour
     {
         int minutos = Mathf.FloorToInt(tiempoTranscurrido / 60);
         int segundos = Mathf.FloorToInt(tiempoTranscurrido % 60);
-        string tiempoFormateado = string.Format("Tiempo {0:00}:{1:00}", minutos, segundos);
-        textoTiempo.text = tiempoFormateado;
+        textoTiempo.text = $"{etiquetaTiempo} {minutos:00}:{segundos:00}";        
     }
 }
