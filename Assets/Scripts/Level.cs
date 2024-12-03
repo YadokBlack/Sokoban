@@ -46,9 +46,7 @@ public class Level : MonoBehaviour
 
     private void CargarDatosNivel(string rutaArchivo)
     {
-        nivel = null;
-       // if (!File.Exists(rutaArchivo)) Debug.LogError("Archivo no encontrado en la ruta: " + rutaArchivo);            
-        
+        nivel = null;                   
         LeerArchivo(rutaArchivo);
     }
 
@@ -70,7 +68,6 @@ public class Level : MonoBehaviour
 
         CargaArchivoNivel();
     }
-
 
     private void CargaArchivoNivel()
     {
@@ -120,8 +117,7 @@ public class Level : MonoBehaviour
 
     string GenerarRutaArchivoNivel(int numeroDeNivel)
     {
-        // return $"Level{numeroDeNivel:D2}.json"; // Solo el nombre del archivo
-        return $"Level{numeroDeNivel:D2}"; // Sin extensión
+        return $"Level{numeroDeNivel:D2}"; 
     }
 
     private void ImprimirMapa(int[,] mapa, string titulo)
